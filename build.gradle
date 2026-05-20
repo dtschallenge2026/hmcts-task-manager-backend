@@ -164,6 +164,8 @@ dependencies {
   implementation group: 'ch.qos.logback', name: 'logback-core', version: logbackVersion
 
   implementation group: 'io.rest-assured', name: 'rest-assured'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+  runtimeOnly group: 'org.postgresql', name: 'postgresql'
   implementation group: 'org.projectlombok', name: 'lombok'
   annotationProcessor 'org.projectlombok:lombok'
 
