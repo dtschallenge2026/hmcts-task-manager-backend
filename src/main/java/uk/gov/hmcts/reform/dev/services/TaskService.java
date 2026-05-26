@@ -27,7 +27,7 @@ public class TaskService {
     }
 
     public List<Task> getAllTasks() {
-        return taskRepository.findAllByDeletedAtIsNull();
+        return taskRepository.findAllByDeletedAtIsNullOrderByIdAsc();
     }
 
     public Task getTaskById(Long id) {
