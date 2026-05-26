@@ -164,6 +164,8 @@ dependencies {
   implementation group: 'ch.qos.logback', name: 'logback-core', version: logbackVersion
 
   implementation group: 'io.rest-assured', name: 'rest-assured'
+  implementation group: 'org.flywaydb', name: 'flyway-core'
+  implementation group: 'org.flywaydb', name: 'flyway-database-postgresql'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
   runtimeOnly group: 'org.postgresql', name: 'postgresql'
