@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.dev.models.Task;
 import uk.gov.hmcts.reform.dev.repositories.TaskRepository;
 import uk.gov.hmcts.reform.dev.models.TaskStatus;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,11 +22,11 @@ public class TaskService {
     }
 
     public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+        return taskRepository.findAllByDeletedAtIsNull();
     }
 
     public Task getTaskById(Long id) {
-        return taskRepository.findById(id)
+        return taskRepository.findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new RuntimeException("Task not found"));
     }
 
@@ -35,6 +37,8 @@ public class TaskService {
     }
 
     public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
+        Task task = getTaskById(id);
+        task.setDeletedAt(LocalDateTime.now());
+        taskRepository.save(task);
     }
 }

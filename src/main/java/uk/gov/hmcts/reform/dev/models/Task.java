@@ -37,4 +37,6 @@ public class Task {
 
     @Column(nullable = false)
     private LocalDateTime dueDateTime;
+
+    private LocalDateTime deletedAt;
 }
