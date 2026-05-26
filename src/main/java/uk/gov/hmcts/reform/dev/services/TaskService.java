@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.dev.services;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.dev.models.Task;
 import uk.gov.hmcts.reform.dev.repositories.TaskRepository;
 import uk.gov.hmcts.reform.dev.models.TaskStatus;
@@ -27,7 +29,7 @@ public class TaskService {
 
     public Task getTaskById(Long id) {
         return taskRepository.findByIdAndDeletedAtIsNull(id)
-            .orElseThrow(() -> new RuntimeException("Task not found"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
     }
 
     public Task updateTaskStatus(Long id, TaskStatus status) {
