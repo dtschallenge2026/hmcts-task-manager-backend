@@ -9,6 +9,25 @@ services:
       - "5433:5432" # Using port 5433 instead of 5432 as 5432 is already being used by a native Postgres install on my machine
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taskuser -d taskmanager"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: taskmanager
+      DB_USER_NAME: taskuser
+      DB_PASSWORD: taskpassword
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   postgres_data:
