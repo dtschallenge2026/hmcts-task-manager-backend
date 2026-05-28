@@ -23,26 +23,36 @@ public class TaskService {
 
     public Task createTask(Task task) {
         log.info("Creating task: {}", task.getTitle());
-        return taskRepository.save(task);
+        Task saved = taskRepository.save(task);
+        log.info("Task created successfully with id {}", saved.getId());
+        return saved;
     }
 
     public List<Task> getAllTasks() {
-        return taskRepository.findAllByDeletedAtIsNullOrderByIdAsc();
+        log.info("Fetching all tasks");
+        List<Task> tasks = taskRepository.findAllByDeletedAtIsNullOrderByIdAsc();
+        log.info("Retrieved {} tasks successfully", tasks.size());
+        return tasks;
     }
 
     public Task getTaskById(Long id) {
-        return taskRepository.findByIdAndDeletedAtIsNull(id)
+        log.info("Fetching task with id {}", id);
+        Task task = taskRepository.findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> {
-                log.warn("Task not found: {}", id);
+                log.warn("Task not found with id {}", id);
                 return new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found");
             });
+        log.info("Task {} retrieved successfully", id);
+        return task;
     }
 
     public Task updateTaskStatus(Long id, TaskStatus status) {
         Task task = getTaskById(id);
-        log.info("Updating task {} status to {}", id, status);
+        log.info("Updating status of task {} to {}", id, status);
         task.setStatus(status);
-        return taskRepository.save(task);
+        Task updated = taskRepository.save(task);
+        log.info("Task {} status updated successfully to {}", id, status);
+        return updated;
     }
 
     public void deleteTask(Long id) {
@@ -50,5 +60,6 @@ public class TaskService {
         log.info("Soft deleting task {}", id);
         task.setDeletedAt(LocalDateTime.now());
         taskRepository.save(task);
+        log.info("Task {} soft deleted successfully", id);
     }
 }
